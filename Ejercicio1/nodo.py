@@ -4,11 +4,11 @@ class Nodo:
     def __init__(self,elemento=None):
         self.__elemento=elemento
         self.__sig=None
-    def GetElemento(self):
+    def getElemento(self):
         return self.__elemento
-    def GetSiguiente(self):
+    def getSiguiente(self):
         return self.__sig
-    def SetElemento(self,elemento):
+    def setElemento(self,elemento):
         self.__elemento=elemento
-    def SetSiguiente(self,elemento):
+    def setSiguiente(self,elemento):
         self.__sig=elemento
