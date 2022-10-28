@@ -1,4 +1,6 @@
-#       Implemente el TAD Tabla Hash teniendo en cuenta la política de manejo de colisiones usando Buckets,    utilizando como función de transformación de claves el método de extracción, y considerando trabajar con 1000 claves numéricas que serán generadas aleatoriamente a través de la función rand; teniendo en cuenta:
+#       Implemente el TAD Tabla Hash teniendo en cuenta la política de manejo de colisiones usando Buckets,
+#     utilizando como función de transformación de claves el método de extracción,
+#  y considerando trabajar con 1000 claves numéricas que serán generadas aleatoriamente a través de la función rand; teniendo en cuenta:
 
 #       Se pide informar:
 
@@ -27,7 +29,7 @@ class Registro:
     def getRegistro(self):
         return self.__registro
     def addRegistro(self,elemento):
-        self.__registro[self.__indice-1]=elemento
+        self.__registro[self.__indice]=elemento
         self.__indice+=1
     def getElemento(self,i):
         return self.__registro[i]
@@ -48,7 +50,6 @@ class Hash:
         self.__overflow=aux
         aux+=(30*aux/100)
         self.__dimension=self.primo(trunc(aux))
-        regi=Registro()
         self.__tabla=np.full(int(self.__dimension),None)
 
     def es_primo(self,num):
@@ -70,18 +71,22 @@ class Hash:
         listaele=str(elemento)
         ele1=int(listaele[3]+listaele[4])
         aux=ele1%self.__dimension#METODO DE EXTRACCION
-        if self.__tabla[aux].lleno():#pregunto si el registro esta lleno
+        if self.__tabla[aux]==None:
+            regi=Registro()
+            self.__tabla[aux]=regi
             self.__tabla[aux].addRegistro(elemento)
-        else:#si no esta lleno el registro
-            band=True
-            while(band and self.__overflow<self.__dimension):
-                a=self.__tabla[self.__overflow].getIndice()
-                if self.__tabla[self.__overflow].lleno():
-                    self.__tabla[self.__overflow].addRegistro(elemento)
-                    band=False
-                else:
-                    self.__overflow+=1
-                
+        else:
+            if self.__tabla[aux].lleno():#pregunto si el registro esta lleno
+                self.__tabla[aux].addRegistro(elemento)
+            else:#si no esta lleno el registro
+                band=True
+                while(band and self.__overflow<self.__dimension):
+                    if self.__tabla[self.__overflow].lleno():
+                        self.__tabla[self.__overflow].addRegistro(elemento)
+                        band=False
+                    else:
+                        self.__overflow+=1
+                    
 
 
 
@@ -89,21 +94,29 @@ class Hash:
         listaele=str(elemento)
         ele1=int(listaele[3]+listaele[4])
         aux=ele1%self.__dimension
-        if self.__tabla[aux].getElemento()==elemento:
-            retorna=self.__tabla[aux]
+        if self.__tabla[aux]==None:
+            print("el elemento buscado no esta en la tabla")
         else:
-            aux1=self.__tabla[aux]
-            while(aux1.getSiguiente()!=None):
-                aux1=aux1.getSiguiente()
-            retorna=aux.getSiguiente()
+            if self.__tabla[aux].lleno():#pregunto si el registro esta lleno
+                i=0
+                while(self.__tabla[aux].getElemento(i)==elemento):
+                    i+=1
+            else:#si no esta lleno el registro
+                band=True
+                while(band and self.__overflow<self.__dimension):
+                    if self.__tabla[self.__overflow].lleno():
+                        retorna=self.__tabla[self.__overflow]
+                        band=False
+                    else:
+                        self.__overflow+=1
         return retorna
 
 
     def Mostrar(self):
         for i in range(self.__dimension):
             for j in range(0,4):
-                print(i,j,self.__tabla[i].getElemento(j),end="\t ")
-                print("")
+                print(i,j,self.__tabla[i].getElemento(j),end="\t")
+            print("")
 
 
 
