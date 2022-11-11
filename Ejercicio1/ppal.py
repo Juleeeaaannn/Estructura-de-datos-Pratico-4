@@ -36,44 +36,19 @@ class Hash:
                 num+=1
         return num
 
-    # def Insertar(self,elemento):
-    #     aux=elemento%self.__dimension #METODO DE DIVISION
-    #     if self.__tabla[aux]==None:#pregunto si la cabeza de la lista esta vacia
-    #         self.__tabla[aux]=Nodo(elemento)
-    #         self.__tabla[aux].setElemento(elemento)
-    #     else:#si la cabeza no esta vacia entra por aca
-    #         aux1=self.__tabla[aux]
-    #         while(aux1.getSiguiente()!=None):
-    #             aux1=aux1.getSiguiente()
-    #         aux1.setSiguiente(Nodo(elemento))
-
     def Insertar(self,elemento):
         aux=elemento%self.__dimension #METODO DE DIVISION
-        if self.__tabla[aux]==None:#pregunto si la cabeza de la lista esta vacia
+        if self.__tabla[aux]==None:#pregunto si esta vacia la posicion que encontre
             self.__tabla[aux]=elemento
         else:
             aux1=aux+1
-            while(self.__tabla[aux]!=None and aux!=aux1):
-                    aux=(aux+1)%self.__dimension
-            if aux!=aux1 and self.__tabla[aux]!=None:
-                self.__tabla[aux]=elemento
+            while(self.__tabla[aux1]!=None and aux!=aux1):
+                    aux1=(aux1+1)%self.__dimension #SECUENCIA DE PRUEBA LINEAL||| permite utilizar el while para que la proxima posicion en la que caiga este dentro del arreglo numpy
+                                                 # si despues de realizados los ciclos vuelve a caer en la posicion aux1 es que no encontro lugar.
+            if aux!=aux1 and self.__tabla[aux1]==None:
+                self.__tabla[aux1]=elemento
             else:
                 print("elemento no econtrada!")
-
-    # def Buscar(self,elemento):
-    #     aux=elemento%self.__dimension
-    #     if self.__tabla[aux].getElemento()==elemento:
-    #         retorna=self.__tabla[aux]
-    #     else:
-    #         aux1=self.__tabla[aux]
-    #         while(aux1.getElemento()!=elemento):
-    #             aux1=aux1.getSiguiente()
-    #         if aux1.getElemento()==elemento:
-    #             retorna=aux1
-    #         else:
-    #             retorna=None
-    #             print("elemento no encontrado")
-    #     return retorna
 
     def Buscar(self,elemento):
         aux=elemento%self.__dimension
@@ -96,7 +71,6 @@ class Hash:
 
 if __name__ == '__main__':
     tabla=Hash(10)
-    for i in range(10):
-        aux=random.randrange(10)
-        tabla.Insertar(aux)
+    tabla.Insertar(6)
+    tabla.Insertar(57)
     tabla.Mostrar()
